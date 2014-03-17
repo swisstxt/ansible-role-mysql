@@ -26,6 +26,11 @@
   notify:
    - restart mysql
 
+- name: Create the directory /etc/mysql/conf.d
+  file: path=/etc/mysql/conf.d state=directory
+  notify:
+   - restart mysql
+
 - name: ensure mysql service has started/stopped
   service: name={{ mysql_service }} state={{ mysql_state }} enabled={{ mysql_enabled }}
 
