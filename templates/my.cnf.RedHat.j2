@@ -6,8 +6,10 @@ user=mysql
 symbolic-links=0
 port={{ mysql_port }}
 bind-address={{ mysql_bind_address }}
-server-id               = {{ mysql_db_id }}
 
+{% for mysql_config in mysql_configs %}
+{{ mysql_config.name }}={{ mysql_config.value }}
+{% endfor %}
 {% if mysql_repl_role == 'master' %}
 log_bin                 = mysql-bin
 expire_logs_days        = 10
