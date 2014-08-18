@@ -3,6 +3,9 @@ mysql_port: 3306
 mysql_bind_address: '127.0.0.1'
 mysql_root_db_pass: ''
 mysql_data_dir: /var/lib/mysql
+mysql_state: started
+mysql_enabled: 'yes'
+
 mysql_configs:
 - { name: 'query_cache_limit', value: '16M'}
 - { name: 'query_cache_size', value: '32M'}
