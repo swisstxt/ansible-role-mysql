@@ -4,6 +4,9 @@
 [client]
 port		= {{ mysql_port }}
 socket		= /var/run/mysqld/mysqld.sock
+{% if mysql_port != 3306 %}
+port = {{ mysql_port }}
+{% endif %}
 
 # This was formally known as [safe_mysqld]. Both versions are currently parsed.
 [mysqld_safe]
@@ -14,14 +17,16 @@ nice		= 0
 user		= mysql
 pid-file	= /var/run/mysqld/mysqld.pid
 socket		= /var/run/mysqld/mysqld.sock
-port		= {{ mysql_port }}
 basedir		= /usr
 tmpdir		= /tmp
 lc-messages-dir	= /usr/share/mysql
+{% if mysql_port != 3306 %}
+port = {{ mysql_port }}
+{% endif %}
 datadir = {{ mysql_data_dir }}
 skip-external-locking
 
-bind-address		= {{ mysql_bind_address }}
+bind-address = {{ mysql_bind_address }}
 
 {% for mysql_config in mysql_configs %}
 {{ mysql_config.name }} = {{ mysql_config.value }}

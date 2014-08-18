@@ -4,8 +4,13 @@ socket=/var/lib/mysql/mysql.sock
 user=mysql
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
+{% if mysql_port != 3306 %}
 port={{ mysql_port }}
+{% endif %}
+
+{% if mysql_bind_address != '' %}
 bind-address={{ mysql_bind_address }}
+{% endif %}
 
 {% for mysql_config in mysql_configs %}
 {{ mysql_config.name }}={{ mysql_config.value }}
