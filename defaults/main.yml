@@ -19,4 +19,5 @@ mysql_users: []
 
 mysql_repl_user: []
 
-mysql_repl_role: master
+# role '', master or slave
+mysql_repl_role: ''
