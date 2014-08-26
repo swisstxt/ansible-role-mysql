@@ -46,15 +46,16 @@ Role Variables
 * `mysql_configs`:
   - Description: Various MySQL configs.
   - Default:
-
-    - { name: 'query_cache_limit', value: '16M'}
-    - { name: 'query_cache_size', value: '32M'}
-    - { name: 'join_buffer_size', value: '32M'}
-    - { name: 'thread_cache_size', value: '4'}
-    - { name: 'innodb_rollback_on_timeout', value: '1'}
-    - { name: 'innodb_buffer_pool_size', value: '128M'}
-    - { name: 'innodb_log_file_size', value: '128M'}
-    - { name: 'table_cache', value: '256'}
+  ```
+  - { name: 'query_cache_limit', value: '16M'}
+  - { name: 'query_cache_size', value: '32M'}
+  - { name: 'join_buffer_size', value: '32M'}
+  - { name: 'thread_cache_size', value: '4'}
+  - { name: 'innodb_rollback_on_timeout', value: '1'}
+  - { name: 'innodb_buffer_pool_size', value: '128M'}
+  - { name: 'innodb_log_file_size', value: '128M'}
+  - { name: 'table_cache', value: '256'}
+  ```
 
 * `mysql_db`:
   - Description: Databases to be present.
