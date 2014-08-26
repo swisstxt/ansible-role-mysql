@@ -1,12 +1,13 @@
-MySQL Server
-============
+[![Build Status](https://travis-ci.org/resmo/ansible-role-mysql.svg?branch=master)](https://travis-ci.org/resmo/ansible-role-mysql)
 
-This roles helps to install MySQL Server across RHEL and Ubuntu variants.
-Apart from installing the MySQL Server, it applies basic hardening, like
-securing the root account with password, and removing test databases. The role
-can also be used to add databases to the MySQL server and create users in the
-database. It also supports configuring the databases for replication--both
-master and slave can be configured via this role.
+Ansible MySQL Server Role
+=========================
+
+This roles helps to install MySQL Server across RHEL and Ubuntu variants.Apart from installing the MySQL Server
+
+The role can also be used to add databases to the MySQL server and create users in the database. It also supports configuring the databases for replication--both master and slave can be configured via this role.
+
+This role was forked from [https://github.com/bennojoy/mysql].
 
 Requirements
 ------------
@@ -17,39 +18,61 @@ in the metadata file.
 Role Variables
 --------------
 
-The variables that can be passed to this role and a brief description about
-them are as follows:
 
-      mysql_port: 3306                 # The port for mysql server to listen
-      mysql_bind_address: "0.0.0.0"    # The bind address for mysql server
-      mysql_root_db_pass: foobar       # The root DB password
+* `mysql_port`:
+  - Description: Port where MySQL is listen
+  - Default: `3306`
 
-      # A list that has all the databases to be
-      # created and their replication status:
-      mysql_db:                                 
-           - name: foo
-             replicate: yes
-           - name: bar
-             replicate: no
+* `mysql_bind_address`:
+  - Description: Address MySQL is using
+  - Default: `'127.0.0.1'`
 
-      # A list of the mysql users to be created
-      # and their password and privileges:
-      mysql_users:                              
-           - name: benz
-             pass: foobar
-             priv: "*.*:ALL"
+* `mysql_root_db_pass`:
+  - Description: Address MySQL is using. Empty String will be ignored.
+  - Default: `''`
 
-      # If the database is replicated the users
-      # to be used for replication:
-      mysql_repl_user:                          
-        - name: repl
-          pass: foobar
+* `mysql_data_dir`:
+  - Description: Path where MySQL stores the DBs.
+  - Default: `/var/lib/mysql`
 
-      # The role of this server in replication:
-      mysql_repl_role: master
+* `mysql_state`:
+  - Description: Whether MySQL service should be running.
+  - Default: `started`
 
-      # A unique id for the mysql server (used in replication):
-      mysql_db_id: 7
+* `mysql_enabled`:
+  - Description: Whether MySQL service should be started on boot.
+  - Default: `'yes'`
+
+* `mysql_configs`:
+  - Description: Various MySQL configs.
+  - Default:
+
+    - { name: 'query_cache_limit', value: '16M'}
+    - { name: 'query_cache_size', value: '32M'}
+    - { name: 'join_buffer_size', value: '32M'}
+    - { name: 'thread_cache_size', value: '4'}
+    - { name: 'innodb_rollback_on_timeout', value: '1'}
+    - { name: 'innodb_buffer_pool_size', value: '128M'}
+    - { name: 'innodb_log_file_size', value: '128M'}
+    - { name: 'table_cache', value: '256'}
+
+* `mysql_db`:
+  - Description: Databases to be present.
+  - Default: `[]`
+
+* `mysql_users`:
+  - Description: MySQL users to be present.
+  - Default: `[]`
+
+* `mysql_repl_user`:
+  - Description: MySQL repl user.
+  - Default: `[]`
+
+* `mysql_repl_role`:
+  - Description: MySQL repl user.
+  - Values: '' | master | slave
+  - Default: `''`
+
 
 Examples
 --------
@@ -59,7 +82,7 @@ database or users.
 
       - hosts: all
         roles:
-        - {role: mysql, root_db_pass: foobar, mysql_db: none, mysql_users: none }
+        - {role: mysql, root_db_pass: s3cur3 }
 
 2) Install MySQL Server and create 2 databases and 2 users.
 
@@ -92,13 +115,14 @@ replication.
          - {role: mysql, mysql_db: [{name: benz}, {name: benz2}],
                          mysql_users: [{name: ben3, pass: foobar, priv: "*.*:ALL"},
                                        {name: ben2, pass: foo}],
-                         mysql_db_id: 8 }
+                         mysql_configs: [{ name: 'mysql_db_id', value: '8'}] }
 
       - hosts: slave
         roles:
          - {role: mysql, mysql_db: none, mysql_users: none,
                   mysql_repl_role: slave, mysql_repl_master: vm2,
-                  mysql_db_id: 9, mysql_repl_user: [{name: repl, pass: foobar}] }
+                  mysql_configs: [{ name: 'mysql_db_id', value: '9'}],
+                  mysql_repl_user: [{name: repl, pass: foobar}] }
 
 Note: When configuring the full replication please make sure the master is
 configured via this role and the master is available in inventory and facts
@@ -120,5 +144,4 @@ Author Information
 ------------------
 
 Benno Joy
- 
-
+René Moser
