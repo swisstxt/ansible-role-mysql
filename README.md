@@ -7,7 +7,7 @@ This roles helps to install MySQL Server across RHEL and Ubuntu variants.Apart f
 
 The role can also be used to add databases to the MySQL server and create users in the database. It also supports configuring the databases for replication--both master and slave can be configured via this role.
 
-This role was forked from [https://github.com/bennojoy/mysql].
+This role was forked from <https://github.com/bennojoy/mysql>.
 
 Requirements
 ------------
