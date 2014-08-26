@@ -1,9 +1,9 @@
 ---
 galaxy_info:
-  author: "Benno Joy"
-  company: AnsibleWorks
+  author: René Moser
+  company: Moser Systems
   license: license (BSD)
-  min_ansible_version: 1.4 
+  min_ansible_version: 1.4
   platforms:
    - name: EL
      versions:
@@ -23,4 +23,3 @@ galaxy_info:
   categories:
    - database:sql
 dependencies: []
-  
