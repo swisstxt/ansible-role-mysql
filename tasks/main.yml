@@ -2,6 +2,10 @@
 - name: add the OS specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
+- name: add the RHEL 7 specific variables
+  include_vars: "{{ ansible_os_family }}-{{ ansible_distribution_version }}.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version|int == 7
+
 - name: install the mysql packages in Redhat derivatives
   yum: name={{ item }} state=installed
   with_items: mysql_pkgs
@@ -24,7 +28,7 @@
 - name: update mysql root password for all root accounts
   mysql_user: name=root host={{ item }} password={{ mysql_root_db_pass }}
   with_items:
-   - "{{ ansible_hostname }}"
+   - "{{ ansible_hostname|lower() }}"
    - 127.0.0.1
    - ::1
    - localhost
@@ -46,7 +50,7 @@
   mysql_user: name='' host={{ item }} state=absent
   with_items:
    - localhost
-   - "{{ ansible_hostname }}"
+   - "{{ ansible_hostname|lower() }}"
 
 - name: remove the test database
   mysql_db: name=test state=absent
