@@ -34,14 +34,6 @@
    - localhost
   when: mysql_root_db_pass != ''
 
-- name: update mysql root password for all root accounts
-  mysql_user: name=root host={{ item }} password={{ mysql_root_db_pass }}
-  with_items:
-   - 127.0.0.1
-   - ::1
-   - localhost
-  when: mysql_root_db_pass != ''
-
 - name: copy .my.cnf file with root password credentials
   template: src=.my.cnf.j2 dest=/root/.my.cnf mode=0600
   when: mysql_root_db_pass != ''
