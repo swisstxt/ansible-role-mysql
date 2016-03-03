@@ -73,7 +73,7 @@
   when: mysql_repl_role == 'slave'
 
 - name: ensure the hostname entry for master is available for the client
-  lineinfile: dest=/etc/hosts regexp="{{ mysql_repl_master }}" line="{{ mysql_repl_master + "   " +  hostvars[mysql_repl_master].ansible_default_ipv4.address }}" state=present
+  lineinfile: dest=/etc/hosts regexp="{{ mysql_repl_master }}" line="{{ mysql_repl_master + '   ' +  hostvars[mysql_repl_master].ansible_default_ipv4.address }}" state=present
   when: slave|failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
 
 - name: get the current master servers replication status
