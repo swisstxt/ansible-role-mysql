@@ -3,7 +3,7 @@
 Ansible MySQL Server Role
 =========================
 
-This roles helps to install MySQL Server across RHEL and Ubuntu variants.Apart from installing the MySQL Server
+This roles helps to install MySQL Server across RHEL and Ubuntu variants. Apart from installing the MySQL Server
 
 The role can also be used to add databases to the MySQL server and create users in the database. It also supports configuring the databases for replication--both master and slave can be configured via this role.
 
@@ -42,6 +42,10 @@ Role Variables
 * `mysql_enabled`:
   - Description: Whether MySQL service should be started on boot.
   - Default: `'yes'`
+
+* `mysql_community_server`:
+  - Description: Installs MySQL community server instead of the distro default.
+  - Default: `'false'`
 
 * `mysql_configs`:
   - Description: Various MySQL configs.

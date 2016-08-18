@@ -1,0 +1,4 @@
+---
+- hosts: localhost
+  roles:
+    - { role: ansible-role-mysql, mysql_community_server: true }
