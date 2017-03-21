@@ -1,7 +1,0 @@
----
-mysql_pkgs:
-  - libselinux-python
-  - mysql-community-server
-  -  MySQL-python
-
-mysql_service: mysql

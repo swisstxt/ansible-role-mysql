@@ -1,0 +1,7 @@
+---
+mysql_community_server_repo: "http://dev.mysql.com/get/mysql-community-release-el{{ ansible_distribution_major_version }}-5.noarch.rpm"
+mysql_pkgs:
+  - libselinux-python
+  - mysql-community-server
+  - MySQL-python
+mysql_service: mysql
