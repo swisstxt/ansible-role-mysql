@@ -23,16 +23,11 @@
     state: installed
   when: ansible_os_family == 'RedHat' and mysql_community_server == true
 
-- name: disable the latest community repository
-  yum_repository:
-    name: mysql80-community
-    enabled: no
-  when: ansible_os_family == 'RedHat' and mysql_community_server == true
-
 - name: install the mysql packages in Redhat derivatives
   yum:
     name: "{{mysql_pkgs}}"
-    enablerepo: "{{ 'mysql' + mysql_community_server_version + '-community' if mysql_community_server else omit }}"
+    enablerepo: "{{ 'mysql' + mysql_community_server_version|string + '-community' if mysql_community_server else omit }}"
+    disablerepo: "{{ 'mysql80-community' if mysql_community_server and mysql_community_server_version != 80 else omit}}"
     state: installed
   when: ansible_os_family == 'RedHat'
 
