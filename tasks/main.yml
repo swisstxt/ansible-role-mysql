@@ -26,8 +26,8 @@
 - name: install the mysql packages in Redhat derivatives
   yum:
     name: "{{mysql_pkgs}}"
-    enablerepo: "{{ 'mysql' + mysql_community_server_version|string + '-community' if mysql_community_server else omit }}"
-    disablerepo: "{{ 'mysql80-community' if mysql_community_server and mysql_community_server_version != 80 else omit}}"
+    enablerepo: "{{ 'mysql' + mysql_community_server_version|replace('.', '') + '-community' if mysql_community_server else omit }}"
+    disablerepo: "{{ 'mysql80-community' if mysql_community_server and mysql_community_server_version != '8.0' else omit}}"
     state: installed
   when: ansible_os_family == 'RedHat'
 
