@@ -7,18 +7,32 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version|int == 7
 
 - name: add variables for MySQL Community Server on RedHad derivates
-  include_vars: RedHat_community_server_{{ mysql_community_server_version }}.yml
+  include_vars: RedHat_community_server.yml
+  when: ansible_os_family == 'RedHat' and mysql_community_server == true
+
+- name: fetch community rpm package for CentOS
+  get_url:
+    url: "{{ mysql_community_server_repo }}"
+    checksum: "{{ mysql_community_server_repo_checksum }}"
+    dest: "/tmp/mysql-community-release.rpm"
   when: ansible_os_family == 'RedHat' and mysql_community_server == true
 
 - name: install community yum repo
   yum:
-    name: "{{ mysql_community_server_repo }}"
+    name: "/tmp/mysql-community-release.rpm"
     state: installed
+  when: ansible_os_family == 'RedHat' and mysql_community_server == true
+
+- name: disable the latest community repository
+  yum_repository:
+    name: mysql80-community
+    enabled: no
   when: ansible_os_family == 'RedHat' and mysql_community_server == true
 
 - name: install the mysql packages in Redhat derivatives
   yum:
     name: "{{mysql_pkgs}}"
+    enablerepo: "{{ 'mysql' + mysql_community_server_version + '-community' if mysql_community_server else omit }}"
     state: installed
   when: ansible_os_family == 'RedHat'
 
