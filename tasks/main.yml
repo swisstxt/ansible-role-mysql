@@ -17,13 +17,15 @@
   when: ansible_os_family == 'RedHat' and mysql_community_server == true
 
 - name: install the mysql packages in Redhat derivatives
-  yum: name={{ item }} state=installed
-  with_items: "{{mysql_pkgs}}"
+  yum:
+    name: "{{mysql_pkgs}}"
+    state: installed
   when: ansible_os_family == 'RedHat'
 
 - name: Install the mysql packages in Debian derivatives
-  apt: name={{ item }} state=installed
-  with_items: "{{mysql_pkgs}}"
+  apt:
+    name: "{{mysql_pkgs}}"
+    state: installed
   environment:
     # see e.g. http://askubuntu.com/a/75560
     RUNLEVEL: 1
@@ -63,7 +65,7 @@
 - name: use temporary password for root user
   set_fact:
     mysql_root_tmp_db_pass: "{{ mysql_tmp_root_passwort.stdout }}"
-  when: not mysql_tmp_root_passwort|skipped
+  when: mysql_tmp_root_passwort is not skipped
 
 - name: update mysql root password for localhost root account (5.7.x).
   shell: 'mysql -e "SET PASSWORD = PASSWORD(''{{ mysql_root_db_pass }}'');" --connect-expired-password -uroot -p"{{ mysql_root_tmp_db_pass }}"'
@@ -127,15 +129,15 @@
 
 - name: ensure the hostname entry for master is available for the client
   lineinfile: dest=/etc/hosts regexp="{{ mysql_repl_master }}" line="{{ mysql_repl_master + '   ' +  hostvars[mysql_repl_master].ansible_default_ipv4.address }}" state=present
-  when: slave|failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
+  when: slave is failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
 
 - name: get the current master servers replication status
   mysql_replication: mode=getmaster
   delegate_to: "{{ mysql_repl_master }}"
   register: repl_stat
-  when: slave|failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
+  when: slave is failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
 
 - name: change the master in slave to start the replication
   mysql_replication: mode=changemaster master_host={{ mysql_repl_master }} master_log_file={{ repl_stat.File }} master_log_pos={{ repl_stat.Position }} master_user={{ mysql_repl_user[0].name }} master_password={{ mysql_repl_user[0].pass }}
-  when: slave|failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
+  when: slave is failed and mysql_repl_role == 'slave' and mysql_repl_master is defined
   no_log: True
