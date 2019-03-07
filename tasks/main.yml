@@ -54,6 +54,8 @@
   notify:
    - restart mysql
 
+- meta: flush_handlers
+
 - name: ensure mysql service has started/stopped
   service: name={{ mysql_service }} state={{ mysql_state }} enabled={{ mysql_enabled }}
 
