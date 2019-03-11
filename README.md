@@ -19,6 +19,10 @@ Role Variables
 --------------
 
 
+* `mysql_only_client`:
+  - Description: Install only the client libraries and tools.
+  - Default: `no`
+
 * `mysql_port`:
   - Description: Port where MySQL is listen
   - Default: `3306`

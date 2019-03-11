@@ -1,8 +1,11 @@
 ---
 mysql_community_server_repo: "https://dev.mysql.com/get/mysql80-community-release-el{{ ansible_distribution_major_version }}-1.noarch.rpm"
 mysql_community_server_repo_checksum: "{{ 'md5:f2befc44a4b8416864987b1686c4a72b' if ansible_distribution_major_version|int == 6 else 'md5:739dc44566d739c5d7b893de96ee6848' }}"
+mysql_service: mysqld
 mysql_pkgs:
   - libselinux-python
   - mysql-community-server
   - MySQL-python
-mysql_service: mysqld
+mysql_client_pkgs:
+  - mysql-community-client
+  - MySQL-python

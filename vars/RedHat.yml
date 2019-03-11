@@ -4,6 +4,9 @@ mysql_pkgs:
   - mysql-server
   - mysql
   - MySQL-python
+mysql_client_pkgs:
+  - mysql
+  - MySQL-python
 
 mysql_service: mysqld
 
