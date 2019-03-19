@@ -5,7 +5,7 @@ mysql_service: mysqld
 mysql_pkgs:
   - libselinux-python
   - mysql-community-server
-  - MySQL-python
+  - mysql-connector-python
 mysql_client_pkgs:
   - mysql-community-client
-  - MySQL-python
+  - mysql-connector-python
