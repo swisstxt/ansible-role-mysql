@@ -34,6 +34,10 @@
       disablerepo: "{{ 'mysql80-community' if mysql_community_server and mysql_community_server_version != '8.0' else omit}}"
       state: installed
     when: ansible_os_family == 'RedHat'
+    # On some servers, the mysql_community repo is installed but in an older version.
+    # So the command will fail when trying to disable the repo mysql80-community.
+    # Therefore, we ignore errors - it will fail later on anyway if here goes something wrong.
+    ignore_errors: yes
 
   - name: Install the mysql packages in Debian derivatives
     apt:
@@ -55,6 +59,10 @@
       disablerepo: "{{ 'mysql80-community' if mysql_community_server and mysql_community_server_version != '8.0' else omit}}"
       state: installed
     when: ansible_os_family == 'RedHat'
+    # On some servers, the mysql_community repo is installed but in an older version.
+    # So the command will fail when trying to disable the repo mysql80-community.
+    # Therefore, we ignore errors - it will fail later on anyway if here goes something wrong.
+    ignore_errors: yes
 
   - name: Install the mysql packages in Debian derivatives
     apt:
