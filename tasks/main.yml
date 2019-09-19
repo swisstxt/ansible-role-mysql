@@ -158,14 +158,16 @@
     mysql_user: name={{ item.name }} password={{ item.pass|default("foobar") }} priv={{ item.priv|default("*.*:ALL") }} state=present host={{ item.host | default("localhost") }}
     with_items: "{{mysql_users}}"
     when: mysql_users|lower() != 'none'
-    no_log: True
+    loop_control:
+      label: "{{item.name}}"
     tags: mysql_users
 
   - name: create the replication users
     mysql_user: name={{ item.name }} host="%" password={{ item.pass|default("foobar") }} priv=*.*:"REPLICATION SLAVE" state=present
     with_items: "{{mysql_repl_user}}"
     when: mysql_repl_role == 'master'
-    no_log: True
+    loop_control:
+      label: "{{item.name}}"
 
   - name: check if slave is already configured for replication
     mysql_replication: mode=getslave
