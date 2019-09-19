@@ -23,6 +23,15 @@
     state: installed
   when: ansible_os_family == 'RedHat' and mysql_community_server == true
 
+- name: pin the correct repository for the desired MySQL version
+  ini_file:
+    dest: /etc/yum.repos.d/mysql-community.repo
+    section: "{{ item.name }}"
+    option: enabled
+    value: "{{ ['0', '1'][item.version == mysql_community_server_version] }}"
+  with_items: "{{ mysql_version_repo_map }}"
+  when: ansible_os_family == 'RedHat' and mysql_community_server == true
+
 - name: install client
   when: mysql_only_client
   block:

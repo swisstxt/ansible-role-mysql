@@ -9,3 +9,8 @@ mysql_pkgs:
 mysql_client_pkgs:
   - mysql-community-client
   - mysql-connector-python
+mysql_version_repo_map:
+  - { version: "5.5", name: mysql55-community }
+  - { version: "5.6", name: mysql56-community }
+  - { version: "5.7", name: mysql57-community }
+  - { version: "8.0", name: mysql80-community }
